@@ -5,12 +5,12 @@ import logo from '@/assets/logo.png'
 
 const Navbar = () => {
     return (
-        <div className="navbar border-b border-[#9CA3AF] bg-[#0c0d10] px-3 sm:px-5">
+        <div className="navbar border-b border-[#444952] bg-[#0c0d10] px-3 sm:px-5">
 
   {/* LEFT */}
   <div className="navbar-start">
 
-    {/* Hamburger - Mobile only */}
+    {/* Hamburger */}
     <div className="dropdown md:hidden">
       <button
         tabIndex={0}
