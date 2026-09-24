@@ -24,7 +24,7 @@ const Banner = () => {
 
         <p className="mt-4 max-w-md text-sm leading-5 text-gray-400">
           FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
-          into today's plan, and watch the week's work add up.
+          into today`s plan, and watch the week`s work add up.
         </p>
 
         <button className="mt-5 rounded-md bg-[#C2F800] px-4 py-2 text-[10px] font-bold text-black transition hover:bg-[#c5ff33]">
