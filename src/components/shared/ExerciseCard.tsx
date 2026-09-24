@@ -1,6 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import { IExercise } from "@/types/exercise.type";
+import { link } from "node:fs";
+import Link from "next/link";
 
 interface ExerciseCardProps {
   exercise: IExercise;
@@ -8,6 +10,10 @@ interface ExerciseCardProps {
 
 const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   return (
+
+
+
+    <Link href={`./Workouts/${exercise.id}`}>
     <div className="group w-full overflow-hidden rounded-2xl border border-[#292C33] bg-[#15171D] shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#C2F800] hover:shadow-[0_10px_30px_rgba(194,248,0,0.12)]">
 
       {/* Image */}
@@ -67,6 +73,7 @@ const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
 
       </div>
     </div>
+    </Link>
   );
 };
 

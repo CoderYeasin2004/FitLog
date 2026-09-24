@@ -15,7 +15,6 @@ const getExerciseCards = async () => {
 const ExerciseCards = async () => {
   const getExerciseCardsData = await getExerciseCards();
 
-  console.log(getExerciseCardsData, "exercisecards");
 
   return (
     <section className="container mx-auto px-4 py-10">

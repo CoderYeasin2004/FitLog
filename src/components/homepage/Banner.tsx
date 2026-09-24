@@ -27,9 +27,9 @@ const Banner = () => {
           into today`s plan, and watch the week`s work add up.
         </p>
 
-        <button className="mt-5 rounded-md bg-[#C2F800] px-4 py-2 text-[10px] font-bold text-black transition hover:bg-[#c5ff33]">
-          BROWSE WORKOUTS
-        </button>
+        <button className="mt-5 block mx-auto rounded-md bg-[#C2F800] px-4 py-2 text-[10px] font-bold text-black transition hover:bg-[#c5ff33] md:mx-0">
+  BROWSE WORKOUTS
+</button>
       </div>
 
       {/* Right Side */}

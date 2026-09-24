@@ -1,102 +1,119 @@
 import Image from "next/image";
 import React from "react";
 import logo from "@/assets/logo.png";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
     <nav className="w-full border-b border-[#444952] bg-[#0c0d10]">
+      <div className="navbar container mx-auto w-full max-w-[1400px] px-2 sm:px-5 lg:px-8">
 
-      <div className="navbar container mx-auto w-full max-w-[1400px] px-3 sm:px-5 lg:px-8">
-
-        {/* LEFT */}
+        {/* ================= LEFT ================= */}
         <div className="navbar-start">
 
           {/* Hamburger - Mobile */}
           <div className="dropdown md:hidden">
             <button
               tabIndex={0}
-              className="btn btn-ghost btn-sm text-[#9CA3AF]"
+              className="btn btn-ghost btn-xs px-1 text-[#9CA3AF]"
             >
               ☰
             </button>
 
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content z-10 mt-3 w-48 rounded-box bg-[#15171D] p-2 text-[#9CA3AF] shadow"
+              className="menu menu-sm dropdown-content z-10 mt-3 w-40 rounded-box bg-[#15171D] p-2 text-[#9CA3AF] shadow"
             >
               <li>
-                <a>Workouts</a>
+                <Link href="/Workouts">
+                  Workouts
+                </Link>
               </li>
 
               <li>
-                <a>My Plan</a>
+                <Link href="/my-plan">
+                  My Plan
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="flex items-center gap-1.5"
+          >
             <Image
               src={logo}
               alt="FitLog Logo"
-              width={32}
-              height={32}
+              width={25}
+              height={25}
             />
 
-            <h2 className="text-lg font-bold text-white sm:text-xl">
+            <h2 className="text-xs font-bold text-white sm:text-xl">
               FITLOG
             </h2>
-          </div>
+          </Link>
 
         </div>
 
 
-        {/* CENTER */}
+        {/* ================= CENTER ================= */}
+        {/* Desktop only */}
         <div className="navbar-center hidden md:flex">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
 
-            <a className="btn btn-ghost btn-sm rounded-2xl text-[#9CA3AF] transition hover:text-[#C2F800]">
+            <Link
+              href="/Workouts"
+              className="btn btn-ghost btn-sm rounded-2xl px-3 text-sm text-[#9CA3AF] transition hover:text-[#C2F800]"
+            >
               Workouts
-            </a>
+            </Link>
 
-            <a className="btn btn-ghost btn-sm rounded-2xl text-[#9CA3AF] transition hover:text-[#C2F800]">
+            <Link
+              href="/my-plan"
+              className="btn btn-ghost btn-sm rounded-2xl px-3 text-sm text-[#9CA3AF] transition hover:text-[#C2F800]"
+            >
               My Plan
-            </a>
+            </Link>
 
           </div>
         </div>
 
 
-        {/* RIGHT */}
+        {/* ================= RIGHT ================= */}
         <div className="navbar-end">
-
-          <div className="flex items-center gap-3 sm:gap-5">
+          <div className="flex items-center gap-1.5 sm:gap-5">
 
             {/* Plan */}
-            <div className="hidden items-center gap-1 text-xs text-[#9CA3AF] sm:flex sm:text-sm">
+            <Link
+              href="/my-plan"
+              className="flex items-center gap-0.5 text-[9px] text-[#9CA3AF] sm:gap-1 sm:text-sm"
+            >
               <span>Plan</span>
 
-              <span className="badge badge-xs rounded-4xl text-[#ccff00] outline-1 sm:badge-sm">
+              <span className="badge badge-xs rounded-full px-1 text-[8px] text-[#ccff00] outline-1 sm:badge-sm sm:text-xs">
                 0
               </span>
-            </div>
+            </Link>
 
 
             {/* Saved */}
-            <div className="hidden items-center gap-1 text-xs text-[#9CA3AF] sm:flex sm:text-sm">
+            <Link
+              href="/saved"
+              className="flex items-center gap-0.5 text-[9px] text-[#9CA3AF] sm:gap-1 sm:text-sm"
+            >
               <span>Saved</span>
 
-              <span className="badge badge-xs rounded-4xl text-[#ccff00] outline-1 sm:badge-sm">
+              <span className="badge badge-xs rounded-full px-1 text-[8px] text-[#ccff00] outline-1 sm:badge-sm sm:text-xs">
                 0
               </span>
-            </div>
+            </Link>
 
           </div>
-
         </div>
 
       </div>
-
     </nav>
   );
 };
