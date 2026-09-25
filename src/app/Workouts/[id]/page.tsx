@@ -1,3 +1,5 @@
+import AddToPlanBtn from "@/components/exerciseDetails/AddToPlanBtn";
+import SaveForLaterBtn from "@/components/exerciseDetails/SaveForLaterBtn";
 import { IExercise } from "@/types/exercise.type";
 
 interface IExerciseCardDetailsPageProps {
@@ -174,13 +176,9 @@ const ExerciseCardDetailsPage = async ({
             {/* ================= BUTTONS ================= */}
             <div className="mt-5 flex flex-wrap gap-2">
 
-              <button className="btn btn-sm h-9 min-h-0 border-0 bg-lime-400 px-4 text-[14px] font-medium text-black hover:bg-lime-300">
-                ▣ Add to today`s plan
-              </button>
+              <AddToPlanBtn exercise={exercise} />
 
-              <button className="btn btn-sm h-9 min-h-0 border border-gray-700 bg-transparent px-4 text-[14px] font-medium text-gray-300 hover:bg-gray-800">
-                ♡ Save for later
-              </button>
+              <SaveForLaterBtn exercise={exercise} />
 
             </div>
 
