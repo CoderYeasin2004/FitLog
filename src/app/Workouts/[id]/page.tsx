@@ -151,7 +151,7 @@ const ExerciseCardDetailsPage = async ({
 
             </div>
 
-            {/* ================= INSTRUCTIONS ================= */}
+            {/*  INSTRUCTIONS  */}
             <div className="mt-5">
               <h2 className="text-2xl font-bold uppercase tracking-wide text-white">
                 Instructions
@@ -173,7 +173,7 @@ const ExerciseCardDetailsPage = async ({
               </ol>
             </div>
 
-            {/* ================= BUTTONS ================= */}
+            {/* BUTTONS  */}
             <div className="mt-5 flex flex-wrap gap-2">
 
               <AddToPlanBtn exercise={exercise} />
