@@ -1,6 +1,7 @@
 import AddToPlanBtn from "@/components/exerciseDetails/AddToPlanBtn";
 import SaveForLaterBtn from "@/components/exerciseDetails/SaveForLaterBtn";
 import { IExercise } from "@/types/exercise.type";
+import { notFound } from "next/navigation";
 
 interface IExerciseCardDetailsPageProps {
   params: Promise<{
@@ -8,19 +9,23 @@ interface IExerciseCardDetailsPageProps {
   }>;
 }
 
-const getExercise = async (id: string): Promise<IExercise> => {
+const getExercise = async (
+  id: string,
+): Promise<IExercise | null> => {
   const response = await fetch(
     `https://api.abcz.workers.dev/api/fitlog/${id}`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch exercise");
+    return null;
   }
 
-  return response.json();
+  const exercise: IExercise = await response.json();
+
+  return exercise;
 };
 
 const ExerciseCardDetailsPage = async ({
@@ -29,6 +34,10 @@ const ExerciseCardDetailsPage = async ({
   const { id } = await params;
 
   const exercise = await getExercise(id);
+
+  if (!exercise) {
+    notFound();
+  }
 
   return (
     <main className="min-h-screen bg-[#0d0f14] px-4 py-8 md:px-6 lg:px-10">
@@ -44,20 +53,20 @@ const ExerciseCardDetailsPage = async ({
             />
           </div>
 
-          {/* DETAILS  */}
+          {/* DETAILS */}
           <div className="pt-1">
 
-            {/* Title */}
-            <h1 className="text-2xl font-extrabold uppercase leading-tight text-white md:text-3xl font-">
+            {/* TITLE */}
+            <h1 className="text-2xl font-extrabold uppercase leading-tight text-white md:text-3xl">
               {exercise.name}
             </h1>
 
-            {/* Description */}
+            {/* DESCRIPTION */}
             <p className="mt-2 max-w-xl text-xs leading-5 text-gray-400">
               {exercise.description}
             </p>
 
-            {/* Muscle Groups */}
+            {/* MUSCLE GROUPS */}
             <div className="mt-3 flex flex-wrap gap-2">
               {exercise.muscleGroups.map((muscle, index) => (
                 <span
@@ -72,7 +81,7 @@ const ExerciseCardDetailsPage = async ({
             {/* INFORMATION */}
             <div className="mt-4 overflow-hidden rounded-lg border border-[#252a34] bg-[#161a22]">
 
-              {/* Equipment */}
+              {/* EQUIPMENT */}
               <div className="flex items-center justify-between border-b border-[#252a34] px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Equipment
@@ -83,7 +92,7 @@ const ExerciseCardDetailsPage = async ({
                 </span>
               </div>
 
-              {/* Difficulty */}
+              {/* DIFFICULTY */}
               <div className="flex items-center justify-between border-b border-[#252a34] px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Difficulty
@@ -94,7 +103,7 @@ const ExerciseCardDetailsPage = async ({
                 </span>
               </div>
 
-              {/* Sets */}
+              {/* SETS */}
               <div className="flex items-center justify-between border-b border-[#252a34] px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Sets
@@ -105,7 +114,7 @@ const ExerciseCardDetailsPage = async ({
                 </span>
               </div>
 
-              {/* Reps */}
+              {/* REPS */}
               <div className="flex items-center justify-between border-b border-[#252a34] px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Reps
@@ -116,7 +125,7 @@ const ExerciseCardDetailsPage = async ({
                 </span>
               </div>
 
-              {/* Duration */}
+              {/* DURATION */}
               <div className="flex items-center justify-between border-b border-[#252a34] px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Duration
@@ -127,7 +136,7 @@ const ExerciseCardDetailsPage = async ({
                 </span>
               </div>
 
-              {/* Calories */}
+              {/* CALORIES */}
               <div className="flex items-center justify-between border-b border-[#252a34] px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Calories
@@ -138,7 +147,7 @@ const ExerciseCardDetailsPage = async ({
                 </span>
               </div>
 
-              {/* Rating */}
+              {/* RATING */}
               <div className="flex items-center justify-between px-4 py-3">
                 <span className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
                   Rating
@@ -148,10 +157,9 @@ const ExerciseCardDetailsPage = async ({
                   {exercise.rating}
                 </span>
               </div>
-
             </div>
 
-            {/*  INSTRUCTIONS  */}
+            {/* INSTRUCTIONS */}
             <div className="mt-5">
               <h2 className="text-2xl font-bold uppercase tracking-wide text-white">
                 Instructions
@@ -173,13 +181,10 @@ const ExerciseCardDetailsPage = async ({
               </ol>
             </div>
 
-            {/* BUTTONS  */}
+            {/* BUTTONS */}
             <div className="mt-5 flex flex-wrap gap-2">
-
               <AddToPlanBtn exercise={exercise} />
-
               <SaveForLaterBtn exercise={exercise} />
-
             </div>
 
           </div>

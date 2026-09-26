@@ -24,32 +24,30 @@ const ListedWorkouts = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const activeTab =
-    searchParams.get("tab") === "saved" ? "saved" : "today";
+  const activeTab = searchParams.get("tab") === "saved" ? "saved" : "today";
 
-  const [sortBy, setSortBy] = useState<
-    "rating" | "minutes" | "calories"
-  >("rating");
+  const [sortBy, setSortBy] = useState<"rating" | "minutes" | "calories">(
+    "rating",
+  );
 
   // Current exercises based on active tab
-  const exercises =
-    activeTab === "today" ? addToPlans : saveForLater;
+  const exercises = activeTab === "today" ? addToPlans : saveForLater;
 
   // REMOVE WORKOUT
   const handleRemove = (id: number) => {
     if (activeTab === "today") {
       setAddToPlans((prev: IExercise[]) =>
-        prev.filter((exercise) => exercise.id !== id)
+        prev.filter((exercise) => exercise.id !== id),
       );
     } else {
       setSaveForLater((prev: IExercise[]) =>
-        prev.filter((exercise) => exercise.id !== id)
+        prev.filter((exercise) => exercise.id !== id),
       );
     }
 
     // Also remove from completed list if it exists
     setCompletedExercises((prev: number[]) =>
-      prev.filter((exerciseId) => exerciseId !== id)
+      prev.filter((exerciseId) => exerciseId !== id),
     );
 
     toast.success("Workout removed!");
@@ -67,7 +65,7 @@ const ListedWorkouts = () => {
 
     // Remove from Today's Plan
     setAddToPlans((prev: IExercise[]) =>
-      prev.filter((exercise) => exercise.id !== id)
+      prev.filter((exercise) => exercise.id !== id),
     );
 
     toast.success("Workout marked as done!");
@@ -82,9 +80,7 @@ const ListedWorkouts = () => {
     } else if (sortBy === "minutes") {
       sortedExercises.sort((a, b) => b.duration - a.duration);
     } else if (sortBy === "calories") {
-      sortedExercises.sort(
-        (a, b) => b.caloriesBurned - a.caloriesBurned
-      );
+      sortedExercises.sort((a, b) => b.caloriesBurned - a.caloriesBurned);
     }
 
     return sortedExercises;
@@ -95,9 +91,7 @@ const ListedWorkouts = () => {
   return (
     <div className="container mx-auto flex-1 px-4 sm:px-6 lg:px-8">
       {/* MY PLAN */}
-      <h2 className="mt-10 text-2xl font-bold sm:mt-13 sm:text-3xl">
-        MY PLAN
-      </h2>
+      <h2 className="mt-10 text-2xl font-bold sm:mt-13 sm:text-3xl">MY PLAN</h2>
 
       <p className="mt-1 text-xs text-[#9CA3AF]">
         Cap of five lift for today. Finish them, then load more.
@@ -107,9 +101,7 @@ const ListedWorkouts = () => {
       <div className="mt-6 grid grid-cols-3 rounded-xl border border-[#252a34] bg-[#12151b] sm:mt-10">
         {/* Exercises */}
         <div className="relative p-3 sm:p-5">
-          <p className="text-[9px] text-gray-500 sm:text-[10px]">
-            Exercises
-          </p>
+          <p className="text-[9px] text-gray-500 sm:text-[10px]">Exercises</p>
 
           <p className="mt-1 text-xl font-bold text-lime-400 sm:text-2xl">
             {addToPlans.length}
@@ -120,15 +112,12 @@ const ListedWorkouts = () => {
 
         {/* Minutes */}
         <div className="relative p-3 sm:p-5">
-          <p className="text-[9px] text-gray-500 sm:text-[10px]">
-            Minutes
-          </p>
+          <p className="text-[9px] text-gray-500 sm:text-[10px]">Minutes</p>
 
           <p className="mt-1 text-xl font-bold text-white sm:text-2xl">
             {addToPlans.reduce(
-              (total: number, exercise: IExercise) =>
-                total + exercise.duration,
-              0
+              (total: number, exercise: IExercise) => total + exercise.duration,
+              0,
             )}
           </p>
 
@@ -137,15 +126,13 @@ const ListedWorkouts = () => {
 
         {/* Calories */}
         <div className="p-3 sm:p-5">
-          <p className="text-[9px] text-gray-500 sm:text-[10px]">
-            Calories
-          </p>
+          <p className="text-[9px] text-gray-500 sm:text-[10px]">Calories</p>
 
           <p className="mt-1 text-xl font-bold text-white sm:text-2xl">
             {addToPlans.reduce(
               (total: number, exercise: IExercise) =>
                 total + exercise.caloriesBurned,
-              0
+              0,
             )}
           </p>
         </div>
@@ -184,19 +171,12 @@ const ListedWorkouts = () => {
 
         {/* SORT */}
         <div className="flex items-center gap-2">
-          <span className="text-[14px] text-gray-500">
-            Sort By
-          </span>
+          <span className="text-[14px] text-gray-500">Sort By</span>
 
           <select
             value={sortBy}
             onChange={(e) =>
-              setSortBy(
-                e.target.value as
-                  | "rating"
-                  | "minutes"
-                  | "calories"
-              )
+              setSortBy(e.target.value as "rating" | "minutes" | "calories")
             }
             className="rounded-md border border-[#252a34] bg-[#161a22] px-2 py-1.5 text-[12px] text-gray-300 outline-none"
           >
