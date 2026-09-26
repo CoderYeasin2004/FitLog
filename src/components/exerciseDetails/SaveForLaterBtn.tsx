@@ -32,12 +32,6 @@ const SaveForLaterBtn = ({ exercise }: { exercise: IExercise }) => {
       >
         {isAdded ? "✓ Saved For Later" : "♡ Save for later"}
       </button>
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        theme="dark"
-      />
     </>
   );
 };

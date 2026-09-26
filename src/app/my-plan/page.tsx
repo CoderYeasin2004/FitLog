@@ -2,11 +2,14 @@
 
 import { ExerciseContext } from "@/context/ExerciseContext";
 import { IExercise } from "@/types/exercise.type";
+
 import React, { useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import ExerciseCard from "@/components/shared/ExerciseCard";
+
+import { FaRegClock, FaFire, FaStar } from "react-icons/fa";
+import Image from "next/image";
 
 const ListedWorkouts = () => {
   const {
@@ -24,8 +27,15 @@ const ListedWorkouts = () => {
   const activeTab =
     searchParams.get("tab") === "saved" ? "saved" : "today";
 
-  const exercises = activeTab === "today" ? addToPlans : saveForLater;
+  const [sortBy, setSortBy] = useState<
+    "rating" | "minutes" | "calories"
+  >("rating");
 
+  // Current exercises based on active tab
+  const exercises =
+    activeTab === "today" ? addToPlans : saveForLater;
+
+  // REMOVE WORKOUT
   const handleRemove = (id: number) => {
     if (activeTab === "today") {
       setAddToPlans((prev: IExercise[]) =>
@@ -37,30 +47,35 @@ const ListedWorkouts = () => {
       );
     }
 
+    // Also remove from completed list if it exists
     setCompletedExercises((prev: number[]) =>
       prev.filter((exerciseId) => exerciseId !== id)
     );
 
-    toast.success("Workout removed");
+    toast.success("Workout removed!");
   };
 
+  // MARK AS DONE
   const handleDone = (id: number) => {
     if (completedExercises.includes(id)) {
-      toast.info("Workout is already marked as done");
+      toast.info("Workout is already marked as done!");
       return;
     }
 
+    // Add to completed exercises
     setCompletedExercises((prev: number[]) => [...prev, id]);
 
-    toast.success("Workout marked as done");
+    // Remove from Today's Plan
+    setAddToPlans((prev: IExercise[]) =>
+      prev.filter((exercise) => exercise.id !== id)
+    );
+
+    toast.success("Workout marked as done!");
   };
 
-  const [sortBy, setSortBy] = useState<
-    "rating" | "minutes" | "calories"
-  >("rating");
-
-  const sortExercise = (exercise: IExercise[]) => {
-    const sortedExercises = [...exercise];
+  // SORT WORKOUTS
+  const sortExercise = (exerciseList: IExercise[]) => {
+    const sortedExercises = [...exerciseList];
 
     if (sortBy === "rating") {
       sortedExercises.sort((a, b) => b.rating - a.rating);
@@ -75,13 +90,7 @@ const ListedWorkouts = () => {
     return sortedExercises;
   };
 
-  const sortedPlanExercise = sortExercise(addToPlans);
-  const sortedSavedExercise = sortExercise(saveForLater);
-
-  const sortedExercises =
-    activeTab === "today"
-      ? sortedPlanExercise
-      : sortedSavedExercise;
+  const sortedExercises = sortExercise(exercises);
 
   return (
     <div className="container mx-auto flex-1 px-4 sm:px-6 lg:px-8">
@@ -91,7 +100,7 @@ const ListedWorkouts = () => {
       </h2>
 
       <p className="mt-1 text-xs text-[#9CA3AF]">
-        Cap of five lift for today. Finish them, than load more.
+        Cap of five lift for today. Finish them, then load more.
       </p>
 
       {/* STATS */}
@@ -144,9 +153,11 @@ const ListedWorkouts = () => {
 
       {/* TABS + SORT */}
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-        {/* Tabs */}
+        {/* TABS */}
         <div className="flex items-center rounded-lg border border-[#252a34] bg-[#161a22] p-1">
+          {/* TODAY'S PLAN */}
           <button
+            type="button"
             onClick={() => router.push("/my-plan")}
             className={`rounded-md px-3 py-1.5 text-[10px] font-medium ${
               activeTab === "today"
@@ -154,10 +165,12 @@ const ListedWorkouts = () => {
                 : "text-gray-500"
             }`}
           >
-            Today's Plan
+            Today&apos;s Plan
           </button>
 
+          {/* SAVED */}
           <button
+            type="button"
             onClick={() => router.push("/my-plan?tab=saved")}
             className={`rounded-md px-3 py-1.5 text-[10px] font-medium ${
               activeTab === "saved"
@@ -169,7 +182,7 @@ const ListedWorkouts = () => {
           </button>
         </div>
 
-        {/* Sort */}
+        {/* SORT */}
         <div className="flex items-center gap-2">
           <span className="text-[14px] text-gray-500">
             Sort By
@@ -222,12 +235,16 @@ const ListedWorkouts = () => {
                 key={exercise.id}
                 className="flex flex-col gap-3 rounded-lg border border-slate-800 bg-[#12151b] p-3 sm:flex-row sm:items-center"
               >
-                <img
+                {/* IMAGE */}
+                <Image
                   src={exercise.image}
                   alt={exercise.name}
+                  width={384}
+                  height={256}
                   className="h-32 w-full rounded-md object-cover sm:h-16 sm:w-24"
                 />
 
+                {/* INFORMATION */}
                 <div className="min-w-0 flex-1">
                   <h3 className="truncate text-sm font-semibold text-white">
                     {exercise.name}
@@ -237,13 +254,26 @@ const ListedWorkouts = () => {
                     {exercise.muscleGroups.join(", ")}
                   </p>
 
-                  <div className="mt-1 flex flex-wrap gap-3 text-[10px] text-slate-400">
-                    <span>◷ {exercise.duration} min</span>
-                    <span>🔥 {exercise.caloriesBurned} kcal</span>
-                    <span>★ {exercise.rating}</span>
+                  {/* ICON STATS */}
+                  <div className="mt-1 flex flex-wrap items-center gap-3 text-[10px] text-slate-400">
+                    <span className="flex items-center gap-1">
+                      <FaRegClock className="text-[11px] text-lime-400" />
+                      {exercise.duration} min
+                    </span>
+
+                    <span className="flex items-center gap-1">
+                      <FaFire className="text-[11px] text-lime-400" />
+                      {exercise.caloriesBurned} kcal
+                    </span>
+
+                    <span className="flex items-center gap-1">
+                      <FaStar className="text-[11px] text-lime-400" />
+                      {exercise.rating}
+                    </span>
                   </div>
                 </div>
 
+                {/* BUTTONS */}
                 <div className="relative z-10 flex w-full gap-2 sm:w-auto">
                   {/* VIEW DETAILS */}
                   <Link
@@ -253,24 +283,28 @@ const ListedWorkouts = () => {
                     View Details
                   </Link>
 
-                  {/* MARK AS DONE */}
-                  <button
-                    type="button"
-                    onClick={() => handleDone(exercise.id)}
-                    className={`btn flex-1 rounded-full px-3 py-1 text-[14px] font-medium sm:flex-none ${
-                      isDone
-                        ? "bg-lime-700 text-slate-300"
-                        : "bg-lime-400 text-black"
-                    }`}
-                  >
-                    {isDone ? "Done ✓" : "✓ Mark as Done"}
-                  </button>
+                  {/* MARK AS DONE
+                      ONLY SHOW IN TODAY'S PLAN */}
+                  {activeTab === "today" && (
+                    <button
+                      type="button"
+                      onClick={() => handleDone(exercise.id)}
+                      className={`btn flex-1 rounded-full px-3 py-1 text-[14px] font-medium sm:flex-none ${
+                        isDone
+                          ? "bg-lime-700 text-slate-300"
+                          : "bg-lime-400 text-black"
+                      }`}
+                    >
+                      {isDone ? "Done ✓" : "✓ Mark as Done"}
+                    </button>
+                  )}
 
                   {/* REMOVE */}
                   <button
                     type="button"
                     onClick={() => handleRemove(exercise.id)}
                     className="px-2 text-slate-500 hover:text-white"
+                    aria-label={`Remove ${exercise.name}`}
                   >
                     ×
                   </button>

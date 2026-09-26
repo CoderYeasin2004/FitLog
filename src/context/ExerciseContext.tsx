@@ -1,69 +1,116 @@
-
 "use client";
 
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 
-export const ExerciseContext = createContext<any>({});
+import { IExercise } from "@/types/exercise.type";
 
-const ExerciseProvider = ({ children }: { children: ReactNode }) => {
-  const [addToPlans, setAddToPlans] = useState<any[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("addToPlans");
-      return saved ? JSON.parse(saved) : [];
-    }
+interface IExerciseContext {
+  addToPlans: IExercise[];
+  setAddToPlans: React.Dispatch<
+    React.SetStateAction<IExercise[]>
+  >;
 
-    return [];
-  });
+  saveForLater: IExercise[];
+  setSaveForLater: React.Dispatch<
+    React.SetStateAction<IExercise[]>
+  >;
 
-  const [saveForLater, setSaveForLater] = useState<any[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("saveForLater");
-      return saved ? JSON.parse(saved) : [];
-    }
+  completedExercises: number[];
+  setCompletedExercises: React.Dispatch<
+    React.SetStateAction<number[]>
+  >;
+}
 
-    return [];
-  });
+export const ExerciseContext = createContext<IExerciseContext>({
+  addToPlans: [],
+  setAddToPlans: () => {},
 
-  const [completedExercises, setCompletedExercises] = useState<number[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("completedExercises");
-      return saved ? JSON.parse(saved) : [];
-    }
+  saveForLater: [],
+  setSaveForLater: () => {},
 
-    return [];
-  });
+  completedExercises: [],
+  setCompletedExercises: () => {},
+});
 
-  // Save today's plan
+const ExerciseProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [addToPlans, setAddToPlans] = useState<IExercise[]>([]);
+  const [saveForLater, setSaveForLater] = useState<IExercise[]>([]);
+  const [completedExercises, setCompletedExercises] =
+    useState<number[]>([]);
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // LOAD DATA
   useEffect(() => {
+    const savedPlans = localStorage.getItem("addToPlans");
+    const savedLater = localStorage.getItem("saveForLater");
+    const savedCompleted = localStorage.getItem(
+      "completedExercises",
+    );
+
+    if (savedPlans) {
+      const plans: IExercise[] = JSON.parse(savedPlans);
+
+      // Maximum 5 workouts
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAddToPlans(plans.slice(0, 5));
+    }
+
+    if (savedLater) {
+      setSaveForLater(JSON.parse(savedLater));
+    }
+
+    if (savedCompleted) {
+      setCompletedExercises(JSON.parse(savedCompleted));
+    }
+
+    setIsLoaded(true);
+  }, []);
+
+  // SAVE TODAY'S PLAN
+  useEffect(() => {
+    if (!isLoaded) return;
+
     localStorage.setItem(
       "addToPlans",
-      JSON.stringify(addToPlans)
+      JSON.stringify(addToPlans),
     );
-  }, [addToPlans]);
+  }, [addToPlans, isLoaded]);
 
-  // Save saved workouts
+  // SAVE FOR LATER
   useEffect(() => {
+    if (!isLoaded) return;
+
     localStorage.setItem(
       "saveForLater",
-      JSON.stringify(saveForLater)
+      JSON.stringify(saveForLater),
     );
-  }, [saveForLater]);
+  }, [saveForLater, isLoaded]);
 
-  // Save completed workouts
+  // COMPLETED EXERCISES
   useEffect(() => {
+    if (!isLoaded) return;
+
     localStorage.setItem(
       "completedExercises",
-      JSON.stringify(completedExercises)
+      JSON.stringify(completedExercises),
     );
-  }, [completedExercises]);
+  }, [completedExercises, isLoaded]);
 
   const SharedData = {
     addToPlans,
     setAddToPlans,
-
     saveForLater,
     setSaveForLater,
-
     completedExercises,
     setCompletedExercises,
   };

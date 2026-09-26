@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
 
-const Workoutsloading = () => {
-    return (
-        <div>
-            Workouts Loading..
-        </div>
-    );
+const Globalloading = () => {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <span className="loading loading-spinner loading-xl">
+      </span>
+    </div>
+  );
 };
 
-export default Workoutsloading;
+export default Globalloading;
