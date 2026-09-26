@@ -17,7 +17,9 @@ const ExerciseCards = async () => {
 
 
   return (
-    <section className="container mx-auto px-4 py-10">
+    <section 
+    id="library"
+    className="container mx-auto px-4 py-10">
 
       {/* Heading */}
       <h2 className="text-2xl font-bold text-white">

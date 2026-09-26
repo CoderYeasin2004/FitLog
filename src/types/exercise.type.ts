@@ -11,5 +11,5 @@ export interface IExercise {
   reps: string;
   rating: number;
   description: string;
-  instructions: string[];
+  instruction: string;
 }
