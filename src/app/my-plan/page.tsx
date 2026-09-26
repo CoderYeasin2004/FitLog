@@ -121,7 +121,7 @@ const ListedWorkouts = () => {
       </div>
 
       {/* WORKOUT LIST */}
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-3 pb-16">
         {exercises.length === 0 ? (
           <div className="flex min-h-[180px] flex-col items-center justify-center rounded-lg border border-dashed border-[#252a34] bg-[#0f1217] px-4 text-center">
             <h3 className="text-[18px] font-bold text-white">
